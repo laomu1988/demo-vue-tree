@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./d3.js"></script>
+    <script src="./d3.layout.js"></script>
+    <script src="./vue.min.js"></script>
+    <script src="./flare.js"></script>
+    <style>
+    .node circle {
+        cursor: pointer;
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node text {
+        font-size: 11px;
+    }
+
+    path.link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
+</head>
+<body>
+    <div id="body">
+        <div id="footer">
+            d3.layout.tree
+            <div class="hint">
+                click or option-click to expand or collapse
+            </div>
+        </div>
+    </div>
+    <script src="./handle.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
+    <script src="./flare.js"></script>
+    <script src="https://unpkg.com/vue@2.4.1/dist/vue.js"></script>
+    <style>
+    #app {
+        position: relative;
+        width: 800px;
+        height: 1400px;
+    }
+    .vnode {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: auto;
+        height: 20px;
+        padding: 0 10px;
+        font-size: 13px;
+        line-height: 20px;
+        border-radius: 3px;
+        background: #ffd700;
+    }
+    .link {
+        stroke: #aaa;
+        stroke-width: 1px;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <div v-for="(arr, index) in levels" :key="index">
+                <p v-for="(v,index) in arr" :key="index" class="vnode" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" :data-deep="v.deep">
+                    {{v.name}}
+                </p>
+            </div>
+            <svg width="800" height="1400">
+                <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 15" :x2="link.parent.left + 20" :y2="link.parent.top + 15"></line>
+            </svg>
+            {{test}}
+        </div>
+    </div>
+    <script src="./vdata.js"></script>
+</body>
+</html>
