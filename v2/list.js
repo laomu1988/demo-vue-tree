@@ -24,9 +24,9 @@ var list = [
     {id: 123, name: 'flare', value: 123, pid: 103},
     {id: 124, name: 'flare', value: 123, pid: 108},
     {id: 125, name: 'flare', value: 123, pid: 108},
-    {id: 126, name: 'flare', value: 500, pid: 124},
+    {id: 126, name: 'flare', value: 300, pid: 124},
     {id: 127, name: 'flare', value: 123, pid: 122},
     {id: 128, name: 'flare', value: 123, pid: 122},
     {id: 129, name: 'flare', value: 100, pid: 122},
-    {id: 130, name: 'flare', value: 123, pid: 122}
+    {id: 130, name: 'flare', value: 503, pid: 122}
 ];

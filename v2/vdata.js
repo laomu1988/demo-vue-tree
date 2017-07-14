@@ -82,7 +82,7 @@ new Vue({
             this.list = list;
             this.levels = levels;
             this.red();
-            this.calcHeightAndShow(root);
+            this.calcHeight(root);
             this.calcTop();
         },
         red: function () {
@@ -90,6 +90,11 @@ new Vue({
             this.list.forEach(function (v) {
                 if (v.value > me.rules.min && v.value <= me.rules.max) {
                     v.red = true;
+                    var p = v.parent;
+                    while (p) {
+                        p.open = true;
+                        p = p.parent;
+                    }
                 }
                 else {
                     v.red = false;
@@ -98,15 +103,15 @@ new Vue({
         },
         // 更改过滤规则
         changeRule: function () {
-            console.log('change', this.rules);
             var me = this;
             this.$nextTick(function () {
                 me.red();
+                me.calcHeight(me.root);
+                me.calcTop();
             });
         },
         // 计算所有节点占用的高度和是否展示
-        calcHeightAndShow: function (vnode) {
-            console.log('vnode:', vnode.id);
+        calcHeight: function (vnode) {
             var me = this;
             var height = 0;
             if (vnode.parent && !vnode.parent.open) {
@@ -120,7 +125,7 @@ new Vue({
 
             if (vnode.children && vnode.children.length > 0) {
                 vnode.children.forEach(function (v) {
-                    me.calcHeightAndShow(v);
+                    me.calcHeight(v);
                     height += v.height;
                 });
             }
@@ -162,7 +167,7 @@ new Vue({
         // 收缩和展开
         toggle: function (vnode) {
             vnode.open = !vnode.open;
-            this.calcHeightAndShow(this.root);
+            this.calcHeight(this.root);
             this.calcTop();
             console.log('toggle:', vnode, vnode.open);
         }
