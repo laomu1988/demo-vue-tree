@@ -22,6 +22,17 @@ new Vue({
         console.log(this.levels);
     },
     methods: {
+        compare: function (v1, v2) {
+            if (v1.deep !== v2.deep) {
+                return v1.deep - v2.deep;
+            }
+
+            if (v1.parent === v2.parent) {
+                return v1.id - v2.id;
+            }
+
+            return this.compare(v1.parent, v2.parent);
+        },
         // 初始化数据： 计算deep等
         initData: function (data) {
             var keys = {};
@@ -34,7 +45,6 @@ new Vue({
             data.forEach(function (v) {
                 keys[v.id] = v;
                 v.deep = 0;
-                v.open = false;
                 v.top = 0;
                 v.height = 0;
                 v.path = '';
@@ -49,15 +59,18 @@ new Vue({
                     v.parent = p;
                     v.deep = p.deep + 1;
                     v.left = v.deep * 150 + 10;
-                    levels[v.deep] = levels[v.deep] || [];
-                    levels[v.deep].push(v);
-                    v.prev = levels[v.deep][levels[v.deep].length - 2];
+                    v.open = v.deep < 3;
                 }
                 else {
                     root = v;
-                    levels[0] = levels[0] || [];
-                    levels[0].push(v);
+                    v.open = true;
                 }
+            });
+            data.sort(this.compare);
+            data.forEach(function (v) {
+                levels[v.deep] = levels[v.deep] || [];
+                levels[v.deep].push(v);
+                v.prev = levels[v.deep][levels[v.deep].length - 2];
             });
 
             this.root = root;
@@ -124,11 +137,9 @@ new Vue({
         // 收缩和展开
         toggle: function (vnode) {
             vnode.open = !vnode.open;
-            console.log('toggle:', vnode, vnode.open);
             this.calcHeightAndShow(this.root);
-            console.log('toggle2:', vnode, vnode.open);
             this.calcTop();
-            console.log('toggle3:', vnode, vnode.open);
+            console.log('toggle:', vnode, vnode.open);
         }
     }
 });

@@ -59,7 +59,7 @@
         <div>
             <div v-for="(arr, index) in levels" :key="index">
                 <p v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" :class="'vnode' + (v.children && v.children.length > 0 ? ' pnode':' leaf')" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
-                    {{v.name}}
+                    {{v.id}}:{{v.name}}
                 </p>
             </div>
             <svg width="800" height="1400">
