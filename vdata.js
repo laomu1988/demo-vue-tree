@@ -69,7 +69,7 @@ new Vue({
                 data.children.forEach(function (v, index) {
                     v.parent = data;
                     v.deep = data.deep + 1;
-                    v.open = v.deep < 3; // 默认展示3层
+                    v.open = v.deep < 2; // 默认展示3层
                     v.index = index;
                     v.top = 0;
                     v.left = v.deep * 150 + 10;
