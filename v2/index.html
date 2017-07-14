@@ -8,78 +8,14 @@
     <script src="./list.js"></script>
     <script src="https://unpkg.com/vue@2.4.1/dist/vue.js"></script>
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-    #app {
-        position: relative;
-        width: 800px;
-        height: 1400px;
-        margin: 0;
-        padding: 0;
-    }
-    svg {
-        z-index: 0;
-    }
-    .vnode {
-        position: absolute;
-        z-index: 100;
-        top: 10px;
-        left: 10px;
-        width: auto;
-        min-width: 50px;
-        height: 20px;
-        margin: 0;
-        margin-top: -10px;
-        font-size: 13px;
-        line-height: 20px;
-        border-radius: 3px;
-        background: #ffd700;
-        transition: top .3s;
-        cursor: pointer;
-    }
-    .vnode.red {
-        background: #e00;
-    }
-    .vnode.red .text {
-        color: #fff;
-    }
-    .vnode .text {
-        padding: 0 10px;
-    }
-    .pnode::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: inline-block;
-        width: 3px;
-        height: 20px;
-        background: #e92eef;
-    }
-    .link {
-        fill-opacity: 0;
-        stroke: #aaa;
-        stroke-width: 1px;
-    }
-    .tip {
-        z-index: 999;
-        display: none;
-        padding: 5px;
-        border: 1px solid #eee;
-        line-height: 20px;
-        border-radius: 5px;
-        background: #fff;
-    }
-    .vnode:hover {
-        z-index: 999;
-    }
-    .vnode:hover .tip {
-        display: block;
-    }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="app">
-        <div>
+        <div class="ruler-box">
+            <ruler class="ruler" :value="rules" :min="100" :max="500" v-on:update="changeRule"></ruler>
+        </div>
+        <div class="draw-area">
             <div v-for="(arr, index) in levels" :key="index">
                 <div v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" class="vnode" v-bind:class="{pnode: v.children && v.children.length > 0, 'red':v.red}" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
                     <div class="text">
@@ -104,6 +40,7 @@
             </svg>
         </div>
     </div>
+    <script src="./ruler.js"></script>
     <script src="./vdata.js"></script>
 </body>
 </html>

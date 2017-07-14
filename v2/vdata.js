@@ -10,8 +10,10 @@ var blockHeight = 30;
 new Vue({
     el: '#app',
     data: {
-        vMin: 100,
-        vMax: 350,
+        rules: {
+            min: 200,
+            max: 350
+        },
         root: null, // 顶层根节点
         list: null, // 列表
         levels: null // 层次存储
@@ -86,11 +88,20 @@ new Vue({
         red: function () {
             var me = this;
             this.list.forEach(function (v) {
-                if (v.value > me.vMin && v.value <= me.vMax) {
+                if (v.value > me.rules.min && v.value <= me.rules.max) {
                     v.red = true;
-                } else {
+                }
+                else {
                     v.red = false;
                 }
+            });
+        },
+        // 更改过滤规则
+        changeRule: function () {
+            console.log('change', this.rules);
+            var me = this;
+            this.$nextTick(function () {
+                me.red();
             });
         },
         // 计算所有节点占用的高度和是否展示
