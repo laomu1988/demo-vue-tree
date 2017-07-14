@@ -7,12 +7,8 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
     <script src="./list.js"></script>
     <script src="https://unpkg.com/vue@2.4.1/dist/vue.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
     <style>
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-    }
     #app {
         position: relative;
         width: 800px;
@@ -20,8 +16,12 @@
         margin: 0;
         padding: 0;
     }
+    svg {
+        z-index: 0;
+    }
     .vnode {
         position: absolute;
+        z-index: 100;
         top: 10px;
         left: 10px;
         width: auto;
@@ -29,13 +29,21 @@
         height: 20px;
         margin: 0;
         margin-top: -10px;
-        padding: 0 10px;
         font-size: 13px;
         line-height: 20px;
         border-radius: 3px;
         background: #ffd700;
-        cursor: pointer;
         transition: top .3s;
+        cursor: pointer;
+    }
+    .vnode.red {
+        background: #e00;
+    }
+    .vnode.red .text {
+        color: #fff;
+    }
+    .vnode .text {
+        padding: 0 10px;
     }
     .pnode::after {
         content: "";
@@ -52,15 +60,43 @@
         stroke: #aaa;
         stroke-width: 1px;
     }
+    .tip {
+        z-index: 999;
+        display: none;
+        padding: 5px;
+        border: 1px solid #eee;
+        line-height: 20px;
+        border-radius: 5px;
+        background: #fff;
+    }
+    .vnode:hover {
+        z-index: 999;
+    }
+    .vnode:hover .tip {
+        display: block;
+    }
     </style>
 </head>
 <body>
     <div id="app">
         <div>
             <div v-for="(arr, index) in levels" :key="index">
-                <p v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" :class="'vnode' + (v.children && v.children.length > 0 ? ' pnode':' leaf')" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
-                    {{v.id}}:{{v.name}}
-                </p>
+                <div v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" class="vnode" v-bind:class="{pnode: v.children && v.children.length > 0, 'red':v.red}" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
+                    <div class="text">
+                        {{v.id}}:{{v.name}}
+                    </div>
+                    <div class="tip">
+                        <p>
+                            id: {{v.id}}
+                        </p>
+                        <p>
+                            name: {{v.name}}
+                        </p>
+                        <p>
+                            value: {{v.value}}
+                        </p>
+                    </div>
+                </div>
             </div>
             <svg width="800" height="1400">
                 <!-- <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line> -->

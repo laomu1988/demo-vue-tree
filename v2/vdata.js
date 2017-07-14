@@ -10,6 +10,8 @@ var blockHeight = 30;
 new Vue({
     el: '#app',
     data: {
+        vMin: 100,
+        vMax: 350,
         root: null, // 顶层根节点
         list: null, // 列表
         levels: null // 层次存储
@@ -49,7 +51,8 @@ new Vue({
                 v.height = 0;
                 v.path = '';
                 v.left = 10;
-                v.prev = null;
+                v.prev = null; // 前一个节点
+                v.red = false; // 是否标红
             });
             data.forEach(function (v) {
                 if (v.pid > 0) {
@@ -76,8 +79,19 @@ new Vue({
             this.root = root;
             this.list = list;
             this.levels = levels;
+            this.red();
             this.calcHeightAndShow(root);
             this.calcTop();
+        },
+        red: function () {
+            var me = this;
+            this.list.forEach(function (v) {
+                if (v.value > me.vMin && v.value <= me.vMax) {
+                    v.red = true;
+                } else {
+                    v.red = false;
+                }
+            });
         },
         // 计算所有节点占用的高度和是否展示
         calcHeightAndShow: function (vnode) {
