@@ -10,15 +10,15 @@ var blockHeight = 30;
 new Vue({
     el: '#app',
     data: {
-        json: json,
-        show: json,
-        test: 'test'
+        root: null
+    },
+    created: function () {
+        this.initData(json);
     },
     computed: {
         list: function () {
-            this.initData(this.show);
             var list = [];
-            list.push(this.show);
+            list.push(this.root);
             var index = 0;
             while (index < list.length) {
                 var children = list[index].children;
@@ -39,17 +39,16 @@ new Vue({
                 if (!arr[v.deep]) {
                     arr[v.deep] = [];
                 }
-
                 var level = arr[v.deep];
                 v.prev = level[level.length - 1];
                 level.push(v);
-                v.left = v.deep * 150 + 10;
+                
             });
             this.calcTop();
             return arr;
         }
     },
-    mounted() {
+    mounted: function () {
         console.log('mounted');
         console.log(this.levels);
     },
@@ -58,23 +57,62 @@ new Vue({
         initData: function (data) {
             if (!data.deep) {
                 data.deep = 0;
+                data.open = true;
+                data.top = 0;
+                data.height = 0;
+                data.path = '';
+                data.left = data.deep * 150 + 10;
             }
 
             var me = this;
-            var height = 0;
             if (data.children && data.children.length > 0) {
                 data.children.forEach(function (v, index) {
                     v.parent = data;
                     v.deep = data.deep + 1;
+                    v.open = v.deep < 3; // 默认展示3层
                     v.index = index;
+                    v.top = 0;
+                    v.left = v.deep * 150 + 10;
+                    v.height = 0;
+                    v.path = '';
                     me.initData(v);
+                });
+            }
+            else {
+                data.isLeaf = true;
+            }
+            this.calcHeightAndShow(data);
+            if (data.deep === 0) {
+                this.root = data;
+            }
+        },
+        // 计算所有节点占用的高度和是否展示
+        calcHeightAndShow: function (vnode) {
+            var me = this;
+            var height = 0;
+            if (vnode.parent && !vnode.parent.open) {
+                // 存在父节点并且父节点不展开
+                vnode.height = 0;
+                vnode.open = false;
+            }
+            else if (!vnode.open) {
+                vnode.height = blockHeight;
+            }
+
+            if (vnode.children && vnode.children.length > 0) {
+                vnode.children.forEach(function (v) {
+                    me.calcHeightAndShow(v);
                     height += v.height;
                 });
             }
 
-            data.height = height || blockHeight;
+            if (vnode.open) {
+                vnode.height = height || blockHeight;
+            }
+
         },
-        calcTop() {
+        // 计算节点的位置
+        calcTop: function () {
             this.list.forEach(function (v) {
                 if (v.prev && v.prev.parent === v.parent) {
                     // 拥有相同的父节点
@@ -91,24 +129,24 @@ new Vue({
                     v.top = v.height / 2;
                 }
                 if (v.parent) {
-                    // var mLeft = (v.left * 2 + v.parent.left) / 3;
-                    // var mTop = (v.top + v.parent.top) / 2;
-                    // v.path = 'M' + v.left + ' ' + v.top
-                    // + ' Q ' + mLeft + ' ' + v.top + ' ' + mLeft + ' ' + mTop
-                    // + 'T ' + v.parent.left + ' ' + v.parent.top;
                     var pLeft = v.parent.left + 65;
                     var pTop = v.parent.top;
                     var mLeft = (v.left + pLeft) / 2;
                     var mTop = (v.top + pTop) / 2;
                     v.path = 'M' + v.left + ' ' + v.top
-                    + ' C ' + mLeft + ' ' + v.top + ',' + mLeft + ' ' + pTop
-                    + ',' + pLeft + ' ' + pTop;
+                        + ' C ' + mLeft + ' ' + v.top + ',' + mLeft + ' ' + pTop
+                        + ',' + pLeft + ' ' + pTop;
                 }
-
-                // var prev = (v.parent && v.parent.prev) || v.prev;
-                // v.top = v.height / 2 + (prev ? prev.top + prev.height / 2 : 0);
-                // v.top = v.height / 2 + (v.prev ? v.prev.top + v.prev.height / 2 : 0);
             });
+        },
+        // 收缩和展开
+        toggle: function (vnode) {
+            vnode.open = !vnode.open;
+            console.log('toggle:', vnode, vnode.open);
+            this.calcHeightAndShow(this.root);
+            console.log('toggle2:', vnode, vnode.open);
+            this.calcTop();
+            console.log('toggle3:', vnode, vnode.open);
         }
     }
 });

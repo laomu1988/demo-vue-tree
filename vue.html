@@ -34,6 +34,17 @@
         line-height: 20px;
         border-radius: 3px;
         background: #ffd700;
+        cursor: pointer;
+    }
+    .pnode::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        background: #e92eef;
     }
     .link {
         fill-opacity: 0;
@@ -46,15 +57,14 @@
     <div id="app">
         <div>
             <div v-for="(arr, index) in levels" :key="index">
-                <p v-for="(v,index) in arr" :key="index" class="vnode" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" :data-deep="v.deep">
+                <p v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" :class="'vnode' + (v.isLeaf ? ' leaf':' pnode')" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
                     {{v.name}}
                 </p>
             </div>
             <svg width="800" height="1400">
                 <!-- <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line> -->
-                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0" :d="link.path"></path>
+                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0 && link.parent.open" :d="link.path"></path>
             </svg>
-            {{test}}
         </div>
     </div>
     <script src="./vdata.js"></script>
