@@ -42,6 +42,14 @@ Vue.component('ruler', {
         if (this.value) {
             this.vmin = parseFloat(this.value.min);
             this.vmax = parseFloat(this.value.max);
+            if (this.vmin < this._min) {
+                this.vmin = this._min;
+                this.emit();
+            }
+            else if (this.vmax > this._max) {
+                this.vmax = this._max;
+                this.emit();
+            }
         }
         else {
             this.vmin = this._min;

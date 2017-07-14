@@ -52,6 +52,10 @@ svg {
     stroke: #aaa;
     stroke-width: 1px;
 }
+.link.red {
+    stroke: #e00;
+    stroke-width: 2px;
+}
 .tip {
     z-index: 999;
     display: none;
@@ -69,10 +73,20 @@ svg {
 }
 
 /**ruler部分*/
+.ruler-head {
+    font-size: 14px;
+    text-align: left;
+    
+}
+.ruler-head  span {
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+}
 .ruler {
     position: relative;
     display: inline-block;
-    width: 20px;
+    width: 44px;
     height: 100px;
     margin-top: 10px;
     margin-left: 10px;
@@ -94,8 +108,8 @@ svg {
     width: 0;
     height: 10px;
     margin-top: -5px;
-    border-left: 20px solid #666;
     padding-left: 3px;
+    border-left: 20px solid #666;
     font-size: 10px;
     line-height: 10px;
     text-align: center;

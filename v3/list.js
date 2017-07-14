@@ -1,5 +1,5 @@
 var list = [
-    {id: 100, name: 'flare', value: 123, pid: 0},
+    {id: 100, name: 'flare', value: 123, delay: 120, pid: 0},
     {id: 101, name: 'flare', value: 0, pid: 100},
     {id: 102, name: 'flare', value: 100, pid: 100},
     {id: 103, name: 'flare', value: 123, pid: 100},
@@ -25,8 +25,13 @@ var list = [
     {id: 124, name: 'flare', value: 123, pid: 108},
     {id: 125, name: 'flare', value: 123, pid: 108},
     {id: 126, name: 'flare', value: 300, pid: 124},
-    {id: 127, name: 'flare', value: 123, pid: 122},
+    {id: 127, name: 'flare', value: 123, delay: 201, pid: 122},
     {id: 128, name: 'flare', value: 123, pid: 122},
     {id: 129, name: 'flare', value: 100, pid: 122},
     {id: 130, name: 'flare', value: 503, pid: 122}
 ];
+list.forEach(function (v) {
+    if (!v.delay) {
+        v.delay = 200 * Math.random();
+    }
+});

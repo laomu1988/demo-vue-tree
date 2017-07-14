@@ -14,6 +14,10 @@ new Vue({
             min: 200,
             max: 350
         },
+        delayRules: {
+            min: 10,
+            max: 300
+        },
         root: null, // 顶层根节点
         list: null, // 列表
         levels: null // 层次存储
@@ -55,6 +59,7 @@ new Vue({
                 v.left = 10;
                 v.prev = null; // 前一个节点
                 v.red = false; // 是否标红
+                v.lineRed = false; // 线条是否标红
             });
             data.forEach(function (v) {
                 if (v.pid > 0) {
@@ -99,6 +104,17 @@ new Vue({
                 else {
                     v.red = false;
                 }
+                if (v.delay >= me.delayRules.min && v.delay <= me.delayRules.max) {
+                    v.lineRed = true;
+                    if (!v.red) {
+                        var p = v.parent;
+                        while (p) {
+                            p.open = true;
+                            p = p.parent;
+                        }
+                    }
+                }
+
             });
         },
         // 更改过滤规则

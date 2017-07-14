@@ -13,7 +13,13 @@
 <body>
     <div id="app">
         <div class="ruler-box">
-            <ruler class="ruler" :value="rules" :min="100" :max="500" v-on:update="changeRule"></ruler>
+            <div class="ruler-head">
+                <span>延迟</span>
+                <span>值</span>
+            </div>
+            <ruler class="ruler ruler-1" :value="delayRules" :min="100" :max="500" v-on:update="changeRule">
+            </ruler>
+            <ruler class="ruler ruler-2" :value="rules" :min="100" :max="500" v-on:update="changeRule"></ruler>
         </div>
         <div class="draw-area">
             <div v-for="(arr, index) in levels" :key="index">
@@ -31,12 +37,17 @@
                         <p>
                             value: {{v.value}}
                         </p>
+                        <p>
+                            delay: {{v.delay}}
+                        </p>
                     </div>
                 </div>
             </div>
             <svg width="800" height="1400">
                 <!-- <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line> -->
-                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0 && link.parent.open" :d="link.path"></path>
+                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0 && link.parent.open" 
+                    v-bind:class="{'red': link.delay >= delayRules.min && link.delay <= delayRules.max}"
+                    :d="link.path"></path>
             </svg>
         </div>
     </div>
