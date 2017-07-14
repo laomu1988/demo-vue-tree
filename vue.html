@@ -25,16 +25,18 @@
         top: 10px;
         left: 10px;
         width: auto;
+        min-width: 50px;
         height: 20px;
         margin: 0;
+        margin-top: -10px;
         padding: 0 10px;
         font-size: 13px;
         line-height: 20px;
         border-radius: 3px;
         background: #ffd700;
-        min-width: 50px;
     }
     .link {
+        fill-opacity: 0;
         stroke: #aaa;
         stroke-width: 1px;
     }
@@ -49,7 +51,8 @@
                 </p>
             </div>
             <svg width="800" height="1400">
-                <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line>
+                <!-- <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line> -->
+                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0" :d="link.path"></path>
             </svg>
             {{test}}
         </div>

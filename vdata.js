@@ -90,6 +90,21 @@ new Vue({
                 else {
                     v.top = v.height / 2;
                 }
+                if (v.parent) {
+                    // var mLeft = (v.left * 2 + v.parent.left) / 3;
+                    // var mTop = (v.top + v.parent.top) / 2;
+                    // v.path = 'M' + v.left + ' ' + v.top
+                    // + ' Q ' + mLeft + ' ' + v.top + ' ' + mLeft + ' ' + mTop
+                    // + 'T ' + v.parent.left + ' ' + v.parent.top;
+                    var pLeft = v.parent.left + 65;
+                    var pTop = v.parent.top;
+                    var mLeft = (v.left + pLeft) / 2;
+                    var mTop = (v.top + pTop) / 2;
+                    v.path = 'M' + v.left + ' ' + v.top
+                    + ' C ' + mLeft + ' ' + v.top + ',' + mLeft + ' ' + pTop
+                    + ',' + pLeft + ' ' + pTop;
+                }
+
                 // var prev = (v.parent && v.parent.prev) || v.prev;
                 // v.top = v.height / 2 + (prev ? prev.top + prev.height / 2 : 0);
                 // v.top = v.height / 2 + (v.prev ? v.prev.top + v.prev.height / 2 : 0);
