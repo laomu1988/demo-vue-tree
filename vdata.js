@@ -4,6 +4,7 @@
  */
 var width = 800;
 var height = 600;
+var blockHeight = 30;
 
 /* global Vue,json*/
 new Vue({
@@ -38,6 +39,7 @@ new Vue({
                 if (!arr[v.deep]) {
                     arr[v.deep] = [];
                 }
+
                 var level = arr[v.deep];
                 v.prev = level[level.length - 1];
                 level.push(v);
@@ -70,13 +72,27 @@ new Vue({
                 });
             }
 
-            data.height = height || 30;
+            data.height = height || blockHeight;
         },
         calcTop() {
             this.list.forEach(function (v) {
+                if (v.prev && v.prev.parent === v.parent) {
+                    // 拥有相同的父节点
+                    v.top = v.height / 2 + (v.prev.top + v.prev.height / 2);
+                }
+                else if (v.parent && v.parent.prev) {
+                    // 父节点拥有上一个节点
+                    v.top = v.height / 2 + (v.parent.prev.top + v.parent.prev.height / 2);
+                }
+                else if (v.prev) {
+                    v.top = v.height / 2 + (v.prev.top + v.prev.height / 2);
+                }
+                else {
+                    v.top = v.height / 2;
+                }
                 // var prev = (v.parent && v.parent.prev) || v.prev;
                 // v.top = v.height / 2 + (prev ? prev.top + prev.height / 2 : 0);
-                v.top = v.height / 2 + (v.prev ? v.prev.top + v.prev.height / 2 : 0);
+                // v.top = v.height / 2 + (v.prev ? v.prev.top + v.prev.height / 2 : 0);
             });
         }
     }

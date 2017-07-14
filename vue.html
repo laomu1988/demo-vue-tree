@@ -8,10 +8,17 @@
     <script src="./flare.js"></script>
     <script src="https://unpkg.com/vue@2.4.1/dist/vue.js"></script>
     <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
     #app {
         position: relative;
         width: 800px;
         height: 1400px;
+        margin: 0;
+        padding: 0;
     }
     .vnode {
         position: absolute;
@@ -19,11 +26,13 @@
         left: 10px;
         width: auto;
         height: 20px;
+        margin: 0;
         padding: 0 10px;
         font-size: 13px;
         line-height: 20px;
         border-radius: 3px;
         background: #ffd700;
+        min-width: 50px;
     }
     .link {
         stroke: #aaa;
@@ -40,7 +49,7 @@
                 </p>
             </div>
             <svg width="800" height="1400">
-                <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 15" :x2="link.parent.left + 20" :y2="link.parent.top + 15"></line>
+                <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line>
             </svg>
             {{test}}
         </div>
