@@ -76,12 +76,11 @@ svg {
 .ruler-head {
     font-size: 14px;
     text-align: left;
-    
 }
 .ruler-head  span {
     display: inline-block;
-    text-align: center;
     width: 50px;
+    text-align: center;
 }
 .ruler {
     position: relative;
@@ -121,4 +120,20 @@ svg {
             user-select: none;
 
     -webkit-touch-callout: none; /* iOS Safari */
+}
+
+
+/** 过滤 */
+.reds {
+    width: 350px;
+}
+.reds .one {
+    display: block;
+    padding: 0 5px;
+    border-top: 1px solid #666;
+    font-size: 13px;
+    line-height: 20px;
+}
+.reds .red {
+    color: #e00;
 }

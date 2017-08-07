@@ -5,6 +5,7 @@
 var width = 800;
 var height = 600;
 var blockHeight = 30;
+var blockWidth = 150;
 
 /* global Vue,list*/
 new Vue({
@@ -136,33 +137,30 @@ new Vue({
 
         },
         // 计算节点的位置
-        calcTop: function () {
-            this.list.forEach(function (v) {
-                if (v.prev && v.prev.parent === v.parent) {
-                    // 拥有相同的父节点
-                    v.top = v.height / 2 + (v.prev.top + v.prev.height / 2);
-                }
-                else if (v.parent && v.parent.prev) {
-                    // 父节点拥有上一个节点
-                    v.top = v.height / 2 + (v.parent.prev.top + v.parent.prev.height / 2);
-                }
-                else if (v.prev) {
-                    v.top = v.height / 2 + (v.prev.top + v.prev.height / 2);
-                }
-                else {
-                    v.top = v.height / 2;
-                }
-                if (v.parent) {
-                    var pLeft = v.parent.left + 65;
-                    var pTop = v.parent.top;
-                    var mLeft = (v.left + pLeft) / 2;
-                    var mTop = (v.top + pTop) / 2;
-                    v.path = 'M' + v.left + ' ' + v.top
-                        + ' C ' + mLeft + ' ' + v.top + ',' + mLeft + ' ' + pTop
-                        + ',' + pLeft + ' ' + pTop;
-                }
+        calcTop: function (vnode, prevHeight) {
+            if (!vnode) {
+                vnode = this.root;
+            }
 
-            });
+            prevHeight = prevHeight || 0;
+            vnode.top = prevHeight + vnode.height / 2;
+            if (vnode.children && vnode.children.length > 0) {
+                for (var i = 0; i < vnode.children.length; i++) {
+                    var height = vnode.children[i].height;
+                    this.calcTop(vnode.children[i], prevHeight);
+                    prevHeight += height;
+                }
+            }
+
+            if (vnode.parent) {
+                var pLeft = vnode.parent.left + blockWidth - 80;
+                var pTop = vnode.parent.top;
+                var mLeft = (vnode.left + pLeft) / 2;
+                var mTop = (vnode.top + pTop) / 2;
+                vnode.path = 'M' + vnode.left + ',' + vnode.top
+                    + ' C ' + mLeft + ' ' + vnode.top + ',' + mLeft + ' ' + pTop
+                    + ',' + pLeft + ' ' + pTop + 'L ' + (vnode.parent.left + 10) + ',' + pTop;
+            }
         },
         // 收缩和展开
         toggle: function (vnode) {

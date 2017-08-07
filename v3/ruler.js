@@ -90,6 +90,12 @@ Vue.component('ruler', {
 
             if (this[deg] !== val) {
                 this[deg] = val;
+                if (this.vmin > this.vmax) {
+                    var a = this.vmax;
+                    this.vmax = this.vmin;
+                    this.vmin = a;
+                }
+
                 clearTimeout(this.timer);
                 this.timer = setTimeout(this.emit, 100);
             }

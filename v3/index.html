@@ -21,6 +21,14 @@
             </ruler>
             <ruler class="ruler ruler-2" :value="rules" :min="100" :max="500" v-on:update="changeRule"></ruler>
         </div>
+        <div class="reds">
+            <div v-for="v in reds" class="one">
+                {{v.id}}: {{v.name}},
+                <span v-bind:class="{red: v.red}">value: {{v.value}}</span>
+                ,
+                <span v-bind:class="{red: v.lineRed}">delay:{{v.delay}}</span>
+            </div>
+        </div>
         <div class="draw-area">
             <div v-for="(arr, index) in levels" :key="index">
                 <div v-for="(v,index) in arr" v-if="!v.parent || v.parent.open" class="vnode" v-bind:class="{pnode: v.children && v.children.length > 0, 'red':v.red}" :key="index" :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'" @click="toggle(v)">
@@ -45,9 +53,7 @@
             </div>
             <svg width="800" height="1400">
                 <!-- <line class="link" v-for="(link, index) in list" v-if="link.deep > 0" :x1="link.left" :y1="link.top + 10" :x2="link.parent.left + 50" :y2="link.parent.top + 10"></line> -->
-                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0 && link.parent.open" 
-                    v-bind:class="{'red': link.delay >= delayRules.min && link.delay <= delayRules.max}"
-                    :d="link.path"></path>
+                <path class="link" v-for="(link, index) in list" v-if="link.deep > 0 && link.parent.open" v-bind:class="{'red': link.lineRed}" :d="link.path"></path>
             </svg>
         </div>
     </div>
